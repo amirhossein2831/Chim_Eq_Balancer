@@ -7,6 +7,7 @@ class ChemicalEquationBalancer:
         self.formula = formula
         self.l_formula = self.formula.split('->')[0].strip()
         self.r_formula = self.formula.split('->')[1].strip()
+        self.answer = {}
         self.matrix = np.ndarray([])
 
     def parse_equation(self) -> None:
@@ -70,3 +71,25 @@ class ChemicalEquationBalancer:
 
                 for k in range(i):
                     self.matrix[k] -= self.matrix[k, pivot_col] * self.matrix[i]
+
+    def set_answer(self) -> None:
+        r, c = self.matrix.shape
+        formula = self.l_formula + ' + ' + self.r_formula
+        for i in range(1, len(formula.split('+')) + 1):
+            self.answer.update({f'X{i}': []})
+
+        for i in range(r):
+            for j in range(i, c):
+                if self.matrix[i, j] not in [1, 0]:
+                    self.answer.get(f'X{i+1}').append(-self.matrix[i, j])
+
+    def print_answer(self) -> None:
+        for k, v in self.answer.items():
+            if len(v) != 0:
+                print(k, '=', sum(v))
+            else:
+                print(k, '=', 1)
+
+
+
+
