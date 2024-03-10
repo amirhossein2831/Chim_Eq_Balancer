@@ -10,6 +10,10 @@ to work with matrices involved in the process.
 
 You can install the Chemical Equation Balancer via pip:
 
+```
+pip install chemical_eq_balancer
+```
+
 ## Usage
 
 ### Balancing Chemical Equations
