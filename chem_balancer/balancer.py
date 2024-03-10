@@ -81,7 +81,7 @@ class ChemicalEquationBalancer:
         for i in range(r):
             for j in range(i, c):
                 if self.matrix[i, j] not in [1, 0]:
-                    self.answer.get(f'X{i+1}').append(-self.matrix[i, j])
+                    self.answer.get(f'X{i + 1}').append(-self.matrix[i, j])
 
     def print_answer(self) -> None:
         for k, v in self.answer.items():
@@ -90,6 +90,14 @@ class ChemicalEquationBalancer:
             else:
                 print(k, '=', 1)
 
-
-
+    def print_matrix(self) -> None:
+        r, c = self.matrix.shape
+        for i in range(r):
+            print('[ ', end="")
+            for j in range(c):
+                if self.matrix[i, j] == int(self.matrix[i, j]):
+                    print(int(self.matrix[i, j]), end=' ')
+                else:
+                    print(self.matrix[i, j], end=' ')
+            print(']')
 
