@@ -56,3 +56,18 @@ class ChemicalEquationBalancer:
                 matrix[j] += multiplier * matrix[0]
 
         return self.echelon_maker(matrix[1:, 1:])
+
+    def reduce_echelon_maker(self) -> None:
+        r, c = self.matrix.shape
+        for i in range(r):
+            pivot_col = -1
+            for j in range(c):
+                if self.matrix[i, j] != 0:
+                    pivot_col = j
+                    break
+
+            if pivot_col != -1:
+                self.matrix[i] /= self.matrix[i, pivot_col]
+
+                for k in range(i):
+                    self.matrix[k] -= self.matrix[k, pivot_col] * self.matrix[i]
