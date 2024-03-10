@@ -9,6 +9,11 @@ class ChemicalEquationBalancer:
         self.r_formula = self.formula.split('->')[1].strip()
         self.answer = {}
         self.matrix = np.ndarray([])
+        self.fill_matrix()
+        self.original_matrix = self.matrix.copy()
+        self.echelon_maker(self.matrix)
+        self.reduce_echelon_maker()
+        self.set_answer()
 
     def parse_equation(self) -> None:
         row_num = len(self.elements)
@@ -90,14 +95,17 @@ class ChemicalEquationBalancer:
             else:
                 print(k, '=', 1)
 
-    def print_matrix(self) -> None:
-        r, c = self.matrix.shape
+    def print_matrix(self, matrix: np.ndarray = None) -> None:
+        if matrix is None:
+            matrix = self.matrix
+
+        r, c = matrix.shape
         for i in range(r):
             print('[ ', end="")
             for j in range(c):
-                if self.matrix[i, j] == int(self.matrix[i, j]):
-                    print(int(self.matrix[i, j]), end=' ')
+                if matrix[i, j] == int(matrix[i, j]):
+                    print(int(matrix[i, j]), end=' ')
                 else:
-                    print(self.matrix[i, j], end=' ')
+                    print(matrix[i, j], end=' ')
             print(']')
 
