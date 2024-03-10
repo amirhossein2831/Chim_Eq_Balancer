@@ -38,4 +38,21 @@ class ChemicalEquationBalancer:
 
             col += 1
 
+    def echelon_maker(self, matrix: np.ndarray) -> None:
+        r, c = matrix.shape
+        if r == 0 or c == 0:
+            return
 
+        if matrix[0, 0] == 0:
+            for j in range(1, r):
+                if matrix[j, 0] != 0:
+                    matrix[[0, j]] = matrix[[j, 0]]  # Corrected index for swapping
+                    break
+
+        for j in range(1, r):
+            if matrix[j, 0] != 0:
+                multiplier = -matrix[j, 0] / matrix[0, 0]
+
+                matrix[j] += multiplier * matrix[0]
+
+        return self.echelon_maker(matrix[1:, 1:])
