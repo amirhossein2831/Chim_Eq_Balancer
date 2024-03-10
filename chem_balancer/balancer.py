@@ -112,5 +112,3 @@ class ChemicalEquationBalancer:
                     print(matrix[i, j], end=' ')
             print(']')
 
-    def test(self):
-        pass
