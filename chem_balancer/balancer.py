@@ -15,4 +15,27 @@ class ChemicalEquationBalancer:
         self.matrix = np.zeros((row_num, col_num + 1))
         return l_formula, r_formula
 
-   
+    def fill_matrix(self) -> None:
+        l_formula, r_formula = self.parse_equation()
+        col = 0
+        for i in l_formula.split('+'):
+            for j in i.split():
+                index = self.elements.index(j[0])
+                if len(j) == 1:
+                    self.matrix[index][col] = 1
+                else:
+                    self.matrix[index][col] = int(j[1])
+
+            col += 1
+
+        for i in r_formula.split('+'):
+            for j in i.split():
+                index = self.elements.index(j[0])
+                if len(j) == 1:
+                    self.matrix[index][col] = -1
+                else:
+                    self.matrix[index][col] = int(j[1]) * -1
+
+            col += 1
+
+
