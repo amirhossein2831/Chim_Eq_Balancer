@@ -2,18 +2,19 @@ import numpy as np
 
 
 class ChemicalEquationBalancer:
-    def __init__(self, elements: list, formula: str):
-        self.elements = elements
-        self.formula = formula
-        self.l_formula = self.formula.split('->')[0].strip()
-        self.r_formula = self.formula.split('->')[1].strip()
-        self.answer = {}
-        self.matrix = np.ndarray([])
-        self.fill_matrix()
-        self.original_matrix = self.matrix.copy()
-        self.echelon_maker(self.matrix)
-        self.reduce_echelon_maker()
-        self._set_answer()
+    def __init__(self, elements: list = None, formula: str = None):
+        if elements is not None and formula is not None:
+            self.elements = elements
+            self.formula = formula
+            self.l_formula = self.formula.split('->')[0].strip()
+            self.r_formula = self.formula.split('->')[1].strip()
+            self.answer = {}
+            self.matrix = np.ndarray([])
+            self.fill_matrix()
+            self.original_matrix = self.matrix.copy()
+            self.echelon_maker(self.matrix)
+            self.reduce_echelon_maker()
+            self.set_answer()
 
     def parse_equation(self) -> None:
         row_num = len(self.elements)
@@ -62,7 +63,7 @@ class ChemicalEquationBalancer:
 
         return self.echelon_maker(matrix[1:, 1:])
 
-    def reduce_echelon_maker(self, matrix: np.ndarray = None) -> None:
+    def reduce_echelon_maker(self, matrix: np.ndarray = None):
         if matrix is None:
             matrix = self.matrix
 
@@ -80,7 +81,7 @@ class ChemicalEquationBalancer:
                 for k in range(i):
                     matrix[k] -= matrix[k, pivot_col] * matrix[i]
 
-    def _set_answer(self) -> None:
+    def set_answer(self) -> None:
         r, c = self.matrix.shape
         formula = self.l_formula + ' + ' + self.r_formula
         for i in range(1, len(formula.split('+')) + 1):
@@ -98,10 +99,8 @@ class ChemicalEquationBalancer:
             else:
                 print(k, '=', 1)
 
-    def print_matrix(self, matrix: np.ndarray = None) -> None:
-        if matrix is None:
-            matrix = self.matrix
-
+    @staticmethod
+    def print_matrix(matrix: np.ndarray) -> None:
         r, c = matrix.shape
         for i in range(r):
             print('[ ', end="")
