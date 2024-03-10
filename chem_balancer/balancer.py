@@ -13,7 +13,7 @@ class ChemicalEquationBalancer:
         self.original_matrix = self.matrix.copy()
         self.echelon_maker(self.matrix)
         self.reduce_echelon_maker()
-        self.set_answer()
+        self._set_answer()
 
     def parse_equation(self) -> None:
         row_num = len(self.elements)
@@ -62,22 +62,25 @@ class ChemicalEquationBalancer:
 
         return self.echelon_maker(matrix[1:, 1:])
 
-    def reduce_echelon_maker(self) -> None:
-        r, c = self.matrix.shape
+    def reduce_echelon_maker(self, matrix: np.ndarray = None) -> None:
+        if matrix is None:
+            matrix = self.matrix
+
+        r, c = matrix.shape
         for i in range(r):
             pivot_col = -1
             for j in range(c):
-                if self.matrix[i, j] != 0:
+                if matrix[i, j] != 0:
                     pivot_col = j
                     break
 
             if pivot_col != -1:
-                self.matrix[i] /= self.matrix[i, pivot_col]
+                matrix[i] /= matrix[i, pivot_col]
 
                 for k in range(i):
-                    self.matrix[k] -= self.matrix[k, pivot_col] * self.matrix[i]
+                    matrix[k] -= matrix[k, pivot_col] * matrix[i]
 
-    def set_answer(self) -> None:
+    def _set_answer(self) -> None:
         r, c = self.matrix.shape
         formula = self.l_formula + ' + ' + self.r_formula
         for i in range(1, len(formula.split('+')) + 1):
